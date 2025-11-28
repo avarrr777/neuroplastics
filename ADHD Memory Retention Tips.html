@@ -3,245 +3,202 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NeuroPlastics - Desktopcore Layout Sample</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Press+Start+2P&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>NeuroPlastics AI Suite</title>
+    <link href="https://fonts.googleapis.com/css2?family=Pinyon+Script&family=Noto+Serif+Display:wght@400;700&display=swap" rel="stylesheet">
     <style>
+        /* ----------  COLOUR THEME – NEW LOOK  ---------- */
         :root {
-            --desktop-blue: #c0c0c0;
-            --desktop-gray: #808080;
-            --desktop-dark: #000000;
-            --desktop-light: #ffffff;
-            --desktop-accent: #ff6b6b;
-            --desktop-green: #51cf66;
-            --desktop-yellow: #ffd43b;
+            --desktop-blue:   #f1e2f6;
+            --desktop-gray:   #d0b8d4;
+            --desktop-dark:   #4d2d52;
+            --desktop-light:  #ffffff;
+            --desktop-yellow: #ffc2e0;
+            --pink-dark:      #ffffff;
+            --green-dos:      #51cf66;
         }
-        
-        body {
-            font-family: 'Courier Prime', monospace;
-            background: linear-gradient(135deg, #1e3c72, #2a5298);
-            color: var(--desktop-light);
+
+        /* ----------  GLOBAL  ---------- */
+        html, body {
             margin: 0;
             padding: 0;
             min-height: 100vh;
             overflow-x: hidden;
+            background: linear-gradient(135deg, #ffe0ec, #ffc2e0);
+            font-family: 'Noto Serif Display', serif;
+            cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Cpath fill='%23d63384' d='M8 15S1 10 1 5a3 3 0 0 1 6 0 3 3 0 0 1 6 0C13 10 8 15 8 15z'/%3E%3C/svg%3E") 16 16, auto;
         }
-        
-        .pixel-font {
-            font-family: 'Press Start 2P', cursive;
-            font-size: 0.8rem;
-        }
-        
-        .desktop-container {
-            position: relative;
-            min-height: 100vh;
-            padding: 2rem;
-        }
-        
+
+        /* ----------  DESKTOP ICONS – ROUNDED, BIGGER GAPS  ---------- */
+        .desktop-container { position: relative; min-height: 100vh; padding: 2rem; }
         .desktop-icon {
-            position: absolute;
-            width: 80px;
-            height: 80px;
-            background: rgba(255,255,255,0.1);
-            border: 2px solid rgba(255,255,255,0.3);
-            border-radius: 8px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
+            position: absolute; width: 80px; height: 80px;
+            background: rgba(255,255,255,.35); border: 2px solid rgba(255,255,255,.5);
+            border-radius: 12px; display: flex; flex-direction: column;
+            align-items: center; justify-content: center; cursor: pointer;
+            transition: all .3s ease; backdrop-filter: blur(10px);
         }
-        
-        .desktop-icon:hover {
-            background: rgba(255,255,255,0.2);
-            transform: scale(1.05);
+        .desktop-icon:hover { background: rgba(255,255,255,.5); transform: scale(1.05); }
+        .desktop-icon i { font-size: 2rem; margin-bottom: 6px; color: var(--desktop-yellow); }
+        .desktop-icon span { font-size: .75rem; text-align: center; color: var(--desktop-dark); }
+
+        /* 30 px gaps */
+        .desktop-icon:nth-child(1) { top: 2rem; left: 2rem; }
+        .desktop-icon:nth-child(2) { top: 2rem; left: calc(2rem + 80px + 30px); }
+        .desktop-icon:nth-child(3) { top: calc(2rem + 80px + 30px); left: 2rem; }
+        .desktop-icon:nth-child(4) { top: calc(2rem + 80px + 30px); left: calc(2rem + 80px + 30px); }
+        .desktop-icon:nth-child(5) { top: calc(2rem + 160px + 60px); left: 2rem; }
+        .desktop-icon:nth-child(6) { top: calc(2rem + 160px + 60px); left: calc(2rem + 80px + 30px); }
+
+        /* ----------  PIXEL HEART  ---------- */
+        .pixel-art { position: absolute; width: 5px; height: 5px; background: transparent; pointer-events: none; }
+        .heart-8x8 {
+            box-shadow:
+                15px 0  0 0 var(--pink-dark), 20px 0  0 0 var(--pink-dark),
+                10px 5px 0 0 var(--pink-dark), 25px 5px 0 0 var(--pink-dark),
+                5px 10px 0 0 var(--pink-dark), 30px 10px 0 0 var(--pink-dark),
+                5px 15px 0 0 var(--pink-dark), 30px 15px 0 0 var(--pink-dark),
+                10px 20px 0 0 var(--pink-dark), 25px 20px 0 0 var(--pink-dark),
+                15px 25px 0 0 var(--pink-dark), 20px 30px 0 0 var(--pink-dark);
         }
-        
-        .desktop-icon i {
-            font-size: 2rem;
-            margin-bottom: 0.5rem;
-            color: var(--desktop-yellow);
-        }
-        
-        .desktop-icon span {
-            font-size: 0.7rem;
-            text-align: center;
-            color: var(--desktop-light);
-        }
-        
+
+        /* ----------  WINDOWS – ROUNDED, SOFTER PINK  ---------- */
         .window {
-            position: absolute;
-            background: var(--desktop-blue);
-            border: 2px solid var(--desktop-dark);
-            border-radius: 8px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-            min-width: 300px;
-            min-height: 200px;
-            z-index: 10;
+            position: absolute; background: var(--desktop-light);
+            border: 2px solid var(--desktop-gray); border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,.25);
+            min-width: 300px; min-height: 200px; z-index: 10;
         }
-        
         .window-header {
-            background: linear-gradient(90deg, #0000ff, #000080);
-            color: white;
-            padding: 0.5rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            cursor: move;
-            border-radius: 6px 6px 0 0;
+            background: linear-gradient(to right, #000000 15%, #bf2a6b 41%, #ffc2e0 62%, #f1e2f6 77%, #f1e2f6 94%);
+            color: #fff; padding: .5rem; display: flex;
+            justify-content: space-between; align-items: center;
+            cursor: move; border-radius: 10px 10px 0 0;
         }
-        
-        .window-controls {
-            display: flex;
-            gap: 0.25rem;
-        }
-        
+        .window-controls { display: flex; gap: .25rem; }
         .window-control {
-            width: 16px;
-            height: 16px;
-            border: 1px solid #333;
-            background: var(--desktop-blue);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.6rem;
+            width: 16px; height: 16px; border: 1px solid #333;
+            background: var(--desktop-blue); cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            font-size: .6rem; border-radius: 3px;
         }
-        
         .window-content {
-            padding: 1rem;
-            color: var(--desktop-dark);
-            height: calc(100% - 40px);
-            overflow-y: auto;
+            padding: 1rem; color: var(--desktop-dark);
+            height: calc(100% - 40px); overflow-y: auto;
+            font-family: 'Noto Serif Display', serif;
         }
-        
+
+        /* ----------  TASKBAR  ---------- */
         .taskbar {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 50px;
-            background: var(--desktop-blue);
-            border-top: 2px solid var(--desktop-light);
-            display: flex;
-            align-items: center;
-            padding: 0 1rem;
-            z-index: 100;
+            position: fixed; bottom: 0; left: 0; right: 0; height: 50px;
+            background: var(--desktop-light); border-top: 2px solid var(--desktop-yellow);
+            display: flex; align-items: center; padding: 0 1rem; z-index: 100;
         }
-        
         .start-button {
-            background: var(--desktop-blue);
-            border: 2px outset var(--desktop-light);
-            padding: 0.5rem 1rem;
-            cursor: pointer;
-            font-weight: bold;
-            margin-right: 1rem;
+            background: var(--desktop-light); border: 2px outset var(--desktop-yellow);
+            padding: .5rem 1rem; cursor: pointer; font-weight: bold; margin-right: 1rem;
+            border-radius: 6px; font-family: 'Noto Serif Display', serif;
         }
-        
-        .start-button:active {
-            border: 2px inset var(--desktop-light);
+        .start-button:active { border: 2px inset var(--desktop-yellow); }
+        .taskbar-time { margin-left: auto; background: var(--desktop-light);
+            border: 1px inset var(--desktop-gray); padding: .25rem .5rem; font-size: .8rem; }
+
+        /* ----------  FLOATING TITLES – EXACT POSITIONS & CASE  ---------- */
+        .floating-title {
+            position: absolute; 
+            font-family: 'Pinyon Script', cursive;
+            color: #ffffff;
+            text-shadow:
+                -1px -1px 0 #000,
+                 1px -1px 0 #000,
+                -1px  1px 0 #000,
+                 1px  1px 0 #000;   /* black outline */
+            text-align: center;
+            text-transform: lowercase;
         }
-        
-        .taskbar-time {
-            margin-left: auto;
-            background: var(--desktop-blue);
-            border: 1px inset var(--desktop-gray);
-            padding: 0.25rem 0.5rem;
-            font-size: 0.8rem;
+        .floating-title:nth-of-type(7) {   /* “NeuroPlastics” */
+            font-size: 150px;
+            padding-top: 620px;
+            margin-left: 1px;
+            margin-right: 1000px;
+            transform: scaleY(1.3);
         }
-        
-        .floating-text {
-            position: absolute;
-            color: var(--desktop-yellow);
-            font-size: 1.2rem;
-            animation: float 3s ease-in-out infinite;
+        .floating-title:nth-of-type(8) {   /* “Loading Brain Systems” */
+            font-size: 50px;
+            height: 80px;
+            margin-left: 9px;
+            margin-right: 9px;
+            transform: scaleY(1);
         }
-        
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-        }
-        
+        @keyframes float { 0%,100%{transform:translateY(0) scaleY(var(--y-scale, 1))} 50%{transform:translateY(-10px) scaleY(var(--y-scale, 1))} }
+
+        /* ----------  DOS BLOCK – WHITE, SLABO, SPACED  ---------- */
         .progress-dos {
-            background: var(--desktop-dark);
-            color: var(--desktop-green);
-            padding: 0.5rem;
-            font-family: 'Courier Prime', monospace;
-            font-size: 0.8rem;
+            background-color: #9a8794;
+            margin-bottom: 2px;
+            padding-bottom: 4px;
             border-radius: 4px;
-            margin: 0.5rem 0;
         }
-        
-        .dos-prompt::before {
-            content: "> ";
-            color: var(--desktop-yellow);
+        .dos-prompt {
+            color: #ffffff;
+            font-family: 'Slabo 27px', sans-serif;
+            letter-spacing: 1.5px;
+            line-height: 16px;
+            margin: 2px 0;
         }
-        
+        .dos-prompt::before { content: "> "; color: var(--desktop-yellow); }
+
+        /* ----------  STUDY STATS – BIGGER, ROUNDED, NOTO SERIF  ---------- */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.5rem;
+            margin-top: 2rem;
+        }
+        .stat-box {
+            background: var(--desktop-light);
+            padding: 1rem;
+            border: 2px inset var(--desktop-gray);
+            border-radius: 6px;
+            text-align: center;
+        }
+        .stat-number {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: var(--desktop-dark);
+            font-family: 'Noto Serif Display', serif;
+        }
+        .stat-label {
+            font-size: 0.7rem;
+            color: var(--desktop-gray);
+            font-family: 'Noto Serif Display', serif;
+        }
+
         @media (max-width: 768px) {
-            .desktop-icon {
-                width: 60px;
-                height: 60px;
-            }
-            
-            .desktop-icon i {
-                font-size: 1.5rem;
-            }
-            
-            .desktop-icon span {
-                font-size: 0.6rem;
-            }
+            .desktop-icon { width: 60px; height: 60px; }
+            .desktop-icon i { font-size: 1.5rem; }
+            .desktop-icon span { font-size: .6rem; }
         }
     </style>
 </head>
 <body>
     <div class="desktop-container">
-        <!-- Desktop Icons -->
-        <div class="desktop-icon" style="top: 2rem; left: 2rem;" onclick="openWindow('memory-palace')">
-            <i class="fas fa-home"></i>
-            <span>Memory Palace</span>
-        </div>
-        
-        <div class="desktop-icon" style="top: 2rem; left: 6rem;" onclick="openWindow('flashcards')">
-            <i class="fas fa-layer-group"></i>
-            <span>Flashcards</span>
-        </div>
-        
-        <div class="desktop-icon" style="top: 6rem; left: 2rem;" onclick="openWindow('active-recall')">
-            <i class="fas fa-bolt"></i>
-            <span>Active Recall</span>
-        </div>
-        
-        <div class="desktop-icon" style="top: 6rem; left: 6rem;" onclick="openWindow('lecture-capture')">
-            <i class="fas fa-microphone"></i>
-            <span>Lecture Capture</span>
-        </div>
-        
-        <div class="desktop-icon" style="top: 10rem; left: 2rem;" onclick="openWindow('upload')">
-            <i class="fas fa-upload"></i>
-            <span>Upload</span>
-        </div>
-        
-        <div class="desktop-icon" style="top: 10rem; left: 6rem;" onclick="openWindow('progress')">
-            <i class="fas fa-chart-line"></i>
-            <span>Progress</span>
-        </div>
-        
-        <!-- Floating Text -->
-        <div class="floating-text" style="top: 4rem; right: 4rem;">
-            NEUROPLASTICS.EXE
-        </div>
-        
-        <div class="floating-text" style="top: 8rem; right: 8rem; animation-delay: 1s;">
-            LOADING BRAIN.SYS
-        </div>
-        
-        <!-- Main Window -->
-        <div class="window" id="main-window" style="top: 8rem; right: 4rem; width: 500px; height: 400px;">
+        <!-- Desktop Icons – NOW WITH onclick -->
+        <div class="desktop-icon" onclick="openWindow('memory-palace')"><i class="fas fa-home"></i><span>Memory Palace</span></div>
+        <div class="desktop-icon" onclick="openWindow('flashcards')"><i class="fas fa-layer-group"></i><span>Flashcards</span></div>
+        <div class="desktop-icon" onclick="openWindow('active-recall')"><i class="fas fa-bolt"></i><span>Active Recall</span></div>
+        <div class="desktop-icon" onclick="openWindow('lecture-capture')"><i class="fas fa-microphone"></i><span>Lecture Capture</span></div>
+        <div class="desktop-icon" onclick="openWindow('upload')"><i class="fas fa-upload"></i><span>Upload</span></div>
+        <div class="desktop-icon" onclick="openWindow('progress')"><i class="fas fa-chart-line"></i><span>Progress</span></div>
+
+        <!-- Floating titles – exact positions & case -->
+        <div class="floating-title" style="top: 3rem; right: 4rem;">NeuroPlastics</div>
+        <div class="floating-title" style="top: 7rem; right: 8rem; animation-delay: 1s;">Loading Brain Systems</div>
+        <div class="pixel-art heart-8x8" style="top: 14rem; left: 50%; transform: translateX(-50%);"></div>
+
+        <!-- Main window -->
+        <div class="window" id="main-window" style="top: 10rem; right: 4rem; width: 500px; height: 400px;">
             <div class="window-header">
-                <span class="pixel-font">NEUROPLASTICS.EXE</span>
+                <span style="font-family:'Noto Serif Display',serif;font-size:.9rem;font-weight:700">NeuroPlastics</span>
                 <div class="window-controls">
                     <div class="window-control" onclick="minimizeWindow('main-window')">_</div>
                     <div class="window-control" onclick="maximizeWindow('main-window')">□</div>
@@ -254,188 +211,182 @@
                     <div class="dos-prompt">MEMORY PALACE CONSTRUCTION: COMPLETE</div>
                     <div class="dos-prompt">SPACED REPETITION ALGORITHM: ACTIVE</div>
                     <div class="dos-prompt">ADHD OPTIMIZATION: ENABLED</div>
-                    <div class="dos-prompt">READY FOR STUDY SESSIONS</div>
-                    <br>
+                    <div class="dos-prompt">READY FOR STUDY SESSIONS</div><br>
                     <div class="dos-prompt">C:\NEUROPLASTICS></div>
                 </div>
-                
-                <div style="margin-top: 2rem;">
-                    <h3 style="color: var(--desktop-dark); margin-bottom: 1rem;">Study Statistics:</h3>
-                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem;">
-                        <div style="background: var(--desktop-light); padding: 1rem; border: 2px inset var(--desktop-gray);">
-                            <div style="font-size: 1.5rem; font-weight: bold; color: var(--desktop-dark);">12</div>
-                            <div style="font-size: 0.8rem; color: var(--desktop-gray);">Day Streak</div>
-                        </div>
-                        <div style="background: var(--desktop-light); padding: 1rem; border: 2px inset var(--desktop-gray);">
-                            <div style="font-size: 1.5rem; font-weight: bold; color: var(--desktop-dark);">89%</div>
-                            <div style="font-size: 0.8rem; color: var(--desktop-gray);">Accuracy</div>
-                        </div>
-                        <div style="background: var(--desktop-light); padding: 1rem; border: 2px inset var(--desktop-gray);">
-                            <div style="font-size: 1.5rem; font-weight: bold; color: var(--desktop-dark);">47</div>
-                            <div style="font-size: 0.8rem; color: var(--desktop-gray);">Cards Today</div>
-                        </div>
-                        <div style="background: var(--desktop-light); padding: 1rem; border: 2px inset var(--desktop-gray);">
-                            <div style="font-size: 1.5rem; font-weight: bold; color: var(--desktop-dark);">3</div>
-                            <div style="font-size: 0.8rem; color: var(--desktop-gray);">Sessions</div>
-                        </div>
-                    </div>
+                <!--  Bigger, rounded, Noto-Serif stat boxes  -->
+                <div class="stats-grid">
+                    <div class="stat-box"><div class="stat-number">12</div><div class="stat-label">Day Streak</div></div>
+                    <div class="stat-box"><div class="stat-number">89%</div><div class="stat-label">Accuracy</div></div>
+                    <div class="stat-box"><div class="stat-number">47</div><div class="stat-label">Cards Today</div></div>
+                    <div class="stat-box"><div class="stat-number">3</div><div class="stat-label">Sessions</div></div>
                 </div>
             </div>
         </div>
     </div>
-    
+
     <!-- Taskbar -->
     <div class="taskbar">
-        <div class="start-button" onclick="showStartMenu()">
-            <i class="fas fa-windows" style="margin-right: 0.5rem;"></i>
-            Start
+        <div class="start-button" onclick="showStartMenu()" style="font-family:'Noto Serif Display',serif;">
+            <i class="fas fa-windows" style="margin-right: 0.5rem;"></i>Start
         </div>
-        <div class="taskbar-time" id="taskbar-time">
-            12:00 PM
-        </div>
+        <div class="taskbar-time" id="taskbar-time" style="font-family:'Noto Serif Display',serif;">12:00 PM</div>
     </div>
-    
+
+    <!-- ==========  WORKING TOOLS  ========== -->
     <script>
         let windowZIndex = 10;
-        
-        function openWindow(windowType) {
-            // Create a new window for the selected feature
-            const windowId = 'window-' + Date.now();
-            const windowElement = document.createElement('div');
-            windowElement.className = 'window';
-            windowElement.id = windowId;
-            windowElement.style.top = Math.random() * 200 + 100 + 'px';
-            windowElement.style.left = Math.random() * 300 + 100 + 'px';
-            windowElement.style.zIndex = ++windowZIndex;
-            
-            const titles = {
-                'memory-palace': 'MEMORY_PALACE.EXE',
-                'flashcards': 'FLASHCARDS.EXE',
-                'active-recall': 'ACTIVE_RECALL.EXE',
-                'lecture-capture': 'LECTURE_CAPTURE.EXE',
-                'upload': 'UPLOAD.EXE',
-                'progress': 'PROGRESS_TRACKER.EXE'
+
+        /* ----- open real tool ----- */
+        function openWindow(type) {
+            const id = 'window-' + Date.now();
+            const w = document.createElement('div');
+            w.className = 'window'; w.id = id;
+            w.style.top = (Math.random() * 200 + 100) + 'px';
+            w.style.left = (Math.random() * 300 + 100) + 'px';
+            w.style.zIndex = ++windowZIndex;
+
+            const pretty = {
+                'memory-palace': 'Memory Palace',
+                'flashcards': 'Flashcards',
+                'active-recall': 'Active Recall',
+                'lecture-capture': 'Lecture Capture',
+                'upload': 'Upload',
+                'progress': 'Progress Tracker'
             };
-            
-            const contents = {
-                'memory-palace': 'Building spatial memory associations...<br><br>🏠🏠🏠<br><br>Place your concepts in virtual rooms for better recall.',
-                'flashcards': 'Spaced repetition algorithm active...<br><br>🃏🃏🃏<br><br>Smart flashcards adapt to your learning pace.',
-                'active-recall': 'Generating AI questions...<br><br>❓❓❓<br><br>Test your knowledge with dynamic quizzes.',
-                'lecture-capture': 'Recording and transcribing...<br><br>🎤🎤🎤<br><br>Transform lectures into study materials.',
-                'upload': 'Drag files here to upload...<br><br>📁📁📁<br><br>Support for PDF, TXT, DOC formats.',
-                'progress': 'Tracking your learning journey...<br><br>📊📊📊<br><br>Visualize your improvement over time.'
+
+            const tools = {
+                flashcards: `
+                    <h3 style="margin:0 0 .5rem 0;color:#000;font-family:'Noto Serif Display',serif;font-weight:700">Flashcards</h3>
+                    <textarea id="fc-front" rows="3" style="width:100%;resize:none;font-family:'Noto Serif Display',serif;" placeholder="Question"></textarea>
+                    <textarea id="fc-back"  rows="3" style="width:100%;resize:none;margin-top:2px;font-family:'Noto Serif Display',serif;" placeholder="Answer"></textarea>
+                    <div style="margin-top:4px">
+                        <button onclick="saveCard()" style="padding:2px 8px;font-family:'Noto Serif Display',serif;">Save</button>
+                        <button onclick="nextCard()" style="padding:2px 8px;margin-left:6px;font-family:'Noto Serif Display',serif;">Next ➜</button>
+                        <button onclick="flipCard()" style="padding:2px 8px;margin-left:6px;font-family:'Noto Serif Display',serif;">Flip</button>
+                    </div>
+                    <div id="fc-display" style="margin-top:8px;padding:6px;background:#fff;border:inset 2px #808080;border-radius:6px;min-height:60px;font-family:'Noto Serif Display',serif;"></div>`,
+
+                'memory-palace': `
+                    <h3 style="margin:0 0 .5rem 0;color:#000;font-family:'Noto Serif Display',serif;font-weight:700">Memory Palace</h3>
+                    <textarea id="mp-text" rows="6" style="width:100%;resize:none;font-family:'Noto Serif Display',serif;" placeholder="Place facts in rooms…"></textarea>
+                    <button onclick="savePalace()" style="margin-top:4px;padding:2px 8px;font-family:'Noto Serif Display',serif;">Save</button>
+                    <div id="mp-display" style="margin-top:8px;padding:6px;background:#fff;border:inset 2px #808080;border-radius:6px;min-height:60px;font-family:'Noto Serif Display',serif;"></div>`,
+
+                upload: `
+                    <h3 style="margin:0 0 .5rem 0;color:#000;font-family:'Noto Serif Display',serif;font-weight:700">Upload / Notes</h3>
+                    <input type="file" id="file-input" accept=".txt,.md,.pdf" onchange="loadFile(event)">
+                    <div id="upload-display" style="margin-top:8px;padding:6px;background:#fff;border:inset 2px #808080;border-radius:6px;min-height:60px;white-space:pre-wrap;font-family:'Noto Serif Display',serif;"></div>`,
+
+                progress: `
+                    <h3 style="margin:0 0 .5rem 0;color:#000;font-family:'Noto Serif Display',serif;font-weight:700">Progress</h3>
+                    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:.5rem">
+                        <div style="background:#f2f2f2;padding:.5rem;border:inset 2px #808080;border-radius:6px;"><div style="font-size:1.3rem;font-weight:bold;font-family:'Noto Serif Display',serif;">12</div><div style="font-size:.7rem;font-family:'Noto Serif Display',serif;">Day Streak</div></div>
+                        <div style="background:#f2f2f2;padding:.5rem;border:inset 2px #808080;border-radius:6px;"><div style="font-size:1.3rem;font-weight:bold;font-family:'Noto Serif Display',serif;">89%</div><div style="font-size:.7rem;font-family:'Noto Serif Display',serif;">Accuracy</div></div>
+                        <div style="background:#f2f2f2;padding:.5rem;border:inset 2px #808080;border-radius:6px;"><div style="font-size:1.3rem;font-weight:bold;font-family:'Noto Serif Display',serif;">47</div><div style="font-size:.7rem;font-family:'Noto Serif Display',serif;">Cards Today</div></div>
+                        <div style="background:#f2f2f2;padding:.5rem;border:inset 2px #808080;border-radius:6px;"><div style="font-size:1.3rem;font-weight:bold;font-family:'Noto Serif Display',serif;">3</div><div style="font-size:.7rem;font-family:'Noto Serif Display',serif;">Sessions</div></div>
+                    </div>`
             };
-            
-            windowElement.innerHTML = `
-                <div class="window-header" onmousedown="makeDraggable('${windowId}')">
-                    <span class="pixel-font">${titles[windowType]}</span>
+
+            w.innerHTML = `
+                <div class="window-header" onmousedown="makeDraggable('${id}')">
+                    <span style="font-family:'Noto Serif Display',serif;font-size:.9rem;font-weight:700">${pretty[type] || type}</span>
                     <div class="window-controls">
-                        <div class="window-control" onclick="minimizeWindow('${windowId}')">_</div>
-                        <div class="window-control" onclick="maximizeWindow('${windowId}')">□</div>
-                        <div class="window-control" onclick="closeWindow('${windowId}')">×</div>
+                        <div class="window-control" onclick="minimizeWindow('${id}')">_</div>
+                        <div class="window-control" onclick="maximizeWindow('${id}')">□</div>
+                        <div class="window-control" onclick="closeWindow('${id}')">×</div>
                     </div>
                 </div>
-                <div class="window-content">
-                    ${contents[windowType]}
-                </div>
-            `;
-            
-            document.querySelector('.desktop-container').appendChild(windowElement);
+                <div class="window-content">${tools[type] || 'Real tool coming soon…'}</div>`;
+            document.querySelector('.desktop-container').appendChild(w);
         }
-        
-        function closeWindow(windowId) {
-            const window = document.getElementById(windowId);
-            if (window) {
-                window.remove();
+
+        /* ----------  FLASHCARD ENGINE  ---------- */
+        let cards   = JSON.parse(localStorage.getItem('fcards') || '[]');
+        let cardIdx = 0;
+        let showing = false;
+
+        function saveCard() {
+            const front = document.getElementById('fc-front').value.trim();
+            const back  = document.getElementById('fc-back').value.trim();
+            if (!front || !back) return alert('Both sides required!');
+            cards.push({front, back});
+            localStorage.setItem('fcards', JSON.stringify(cards));
+            document.getElementById('fc-front').value = '';
+            document.getElementById('fc-back').value  = '';
+            alert('Card saved!');
+        }
+        function nextCard() {
+            if (cards.length === 0) { document.getElementById('fc-display').innerHTML = 'No cards yet.'; return; }
+            cardIdx = (cardIdx + 1) % cards.length; showing = false; showCard();
+        }
+        function flipCard() {
+            if (cards.length === 0) return; showing = !showing; showCard();
+        }
+        function showCard() {
+            const c = cards[cardIdx];
+            document.getElementById('fc-display').innerHTML = showing ? `<strong>A:</strong> ${c.back}` : `<strong>Q:</strong> ${c.front}`;
+        }
+
+        /* ----------  MEMORY PALACE  ---------- */
+        function savePalace() {
+            const text = document.getElementById('mp-text').value.trim();
+            if (!text) return alert('Type something first.');
+            localStorage.setItem('palace', text);
+            document.getElementById('mp-display').innerText = 'Palace saved!';
+        }
+
+        /* ----------  FILE / NOTE LOADER  ---------- */
+        function loadFile(ev) {
+            const file = ev.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = e => {
+                document.getElementById('upload-display').innerText = e.target.result.slice(0, 4000) + (e.target.result.length > 4000 ? '\n\n… (truncated)' : '');
+            };
+            reader.readAsText(file);
+        }
+
+        /* ----------  WINDOW CONTROLS  ---------- */
+        function closeWindow(id) { const el = document.getElementById(id); if (el) el.remove(); }
+        function minimizeWindow(id) { const el = document.getElementById(id); if (el) el.style.display = 'none'; }
+        function maximizeWindow(id) {
+            const el = document.getElementById(id);
+            if (!el) return;
+            if (el.style.width === '100vw') {
+                el.style.width = el.style.height = el.style.top = el.style.left = '';
+            } else {
+                el.style.width = '100vw'; el.style.height = 'calc(100vh - 50px)';
+                el.style.top = '0'; el.style.left = '0';
             }
         }
-        
-        function minimizeWindow(windowId) {
-            const window = document.getElementById(windowId);
-            if (window) {
-                window.style.display = 'none';
-            }
-        }
-        
-        function maximizeWindow(windowId) {
-            const window = document.getElementById(windowId);
-            if (window) {
-                if (window.style.width === '100vw') {
-                    window.style.width = '';
-                    window.style.height = '';
-                    window.style.top = '';
-                    window.style.left = '';
-                } else {
-                    window.style.width = '100vw';
-                    window.style.height = 'calc(100vh - 50px)';
-                    window.style.top = '0';
-                    window.style.left = '0';
-                }
-            }
-        }
-        
-        function makeDraggable(windowId) {
-            const window = document.getElementById(windowId);
-            let isDragging = false;
-            let startX, startY, startLeft, startTop;
-            
-            window.onmousedown = function(e) {
-                isDragging = true;
-                startX = e.clientX;
-                startY = e.clientY;
-                startLeft = parseInt(window.style.left) || 0;
-                startTop = parseInt(window.style.top) || 0;
-                window.style.zIndex = ++windowZIndex;
-                
-                document.onmousemove = function(e) {
-                    if (isDragging) {
-                        const deltaX = e.clientX - startX;
-                        const deltaY = e.clientY - startY;
-                        window.style.left = (startLeft + deltaX) + 'px';
-                        window.style.top = (startTop + deltaY) + 'px';
+        function makeDraggable(id) {
+            const el = document.getElementById(id);
+            let dragging = false, startX, startY, startLeft, startTop;
+            el.onmousedown = function (e) {
+                dragging = true; startX = e.clientX; startY = e.clientY;
+                startLeft = parseInt(el.style.left) || 0; startTop = parseInt(el.style.top) || 0;
+                el.style.zIndex = ++windowZIndex;
+                document.onmousemove = function (e) {
+                    if (dragging) {
+                        el.style.left = (startLeft + e.clientX - startX) + 'px';
+                        el.style.top  = (startTop + e.clientY - startY) + 'px';
                     }
                 };
-                
-                document.onmouseup = function() {
-                    isDragging = false;
-                    document.onmousemove = null;
-                    document.onmouseup = null;
-                };
-            };
+                document.onmouseup = function () { dragging = false; document.onmousemove = document.onmouseup = null; };
         }
-        
-        function showStartMenu() {
-            alert('Start menu would open here!\n\nThis demonstrates the desktop-style interface design.');
-        }
-        
-        // Update taskbar time
+
+        /* ----------  TASKBAR CLOCK  ---------- */
         function updateTime() {
-            const now = new Date();
-            const timeString = now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-            document.getElementById('taskbar-time').textContent = timeString;
+            document.getElementById('taskbar-time').textContent = new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
         }
-        
-        setInterval(updateTime, 1000);
-        updateTime();
-        
-        // Add click to focus for windows
-        document.addEventListener('click', (e) => {
-            if (e.target.closest('.window')) {
-                const window = e.target.closest('.window');
-                window.style.zIndex = ++windowZIndex;
-            }
+        setInterval(updateTime, 1000); updateTime();
+
+        /* ----------  CLICK TO FOCUS  ---------- */
+        document.addEventListener('click', e => {
+            const w = e.target.closest('.window');
+            if (w) w.style.zIndex = ++windowZIndex;
         });
     </script>
-<script>
-    document.addEventListener('keydown', e => {
-        if (e.key === 'ArrowRight' || e.key === ' ') {
-            e.preventDefault();
-            window.parent.postMessage('go-next', '*');
-        } else if (e.key === 'ArrowLeft') {
-            e.preventDefault();
-            window.parent.postMessage('go-prev', '*');
-        }
-    });
-</script>
 </body>
 </html>
