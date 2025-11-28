@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NeuroPlastics - Desktopcore Layout Sample</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --desktop-blue: #c0c0c0;
+            --desktop-gray: #808080;
+            --desktop-dark: #000000;
+            --desktop-light: #ffffff;
+            --desktop-accent: #ff6b6b;
+            --desktop-green: #51cf66;
+            --desktop-yellow: #ffd43b;
+        }
+        
+        body {
+            font-family: 'Courier Prime', monospace;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            color: var(--desktop-light);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        .pixel-font {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.8rem;
+        }
+        
+        .desktop-container {
+            position: relative;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+        
+        .desktop-icon {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            background: rgba(255,255,255,0.1);
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+        
+        .desktop-icon:hover {
+            background: rgba(255,255,255,0.2);
+            transform: scale(1.05);
+        }
+        
+        .desktop-icon i {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            color: var(--desktop-yellow);
+        }
+        
+        .desktop-icon span {
+            font-size: 0.7rem;
+            text-align: center;
+            color: var(--desktop-light);
+        }
+        
+        .window {
+            position: absolute;
+            background: var(--desktop-blue);
+            border: 2px solid var(--desktop-dark);
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            min-width: 300px;
+            min-height: 200px;
+            z-index: 10;
+        }
+        
+        .window-header {
+            background: linear-gradient(90deg, #0000ff, #000080);
+            color: white;
+            padding: 0.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: move;
+            border-radius: 6px 6px 0 0;
+        }
+        
+        .window-controls {
+            display: flex;
+            gap: 0.25rem;
+        }
+        
+        .window-control {
+            width: 16px;
+            height: 16px;
+            border: 1px solid #333;
+            background: var(--desktop-blue);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.6rem;
+        }
+        
+        .window-content {
+            padding: 1rem;
+            color: var(--desktop-dark);
+            height: calc(100% - 40px);
+            overflow-y: auto;
+        }
+        
+        .taskbar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 50px;
+            background: var(--desktop-blue);
+            border-top: 2px solid var(--desktop-light);
+            display: flex;
+            align-items: center;
+            padding: 0 1rem;
+            z-index: 100;
+        }
+        
+        .start-button {
+            background: var(--desktop-blue);
+            border: 2px outset var(--desktop-light);
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            font-weight: bold;
+            margin-right: 1rem;
+        }
+        
+        .start-button:active {
+            border: 2px inset var(--desktop-light);
+        }
+        
+        .taskbar-time {
+            margin-left: auto;
+            background: var(--desktop-blue);
+            border: 1px inset var(--desktop-gray);
+            padding: 0.25rem 0.5rem;
+            font-size: 0.8rem;
+        }
+        
+        .floating-text {
+            position: absolute;
+            color: var(--desktop-yellow);
+            font-size: 1.2rem;
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .progress-dos {
+            background: var(--desktop-dark);
+            color: var(--desktop-green);
+            padding: 0.5rem;
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.8rem;
+            border-radius: 4px;
+            margin: 0.5rem 0;
+        }
+        
+        .dos-prompt::before {
+            content: "> ";
+            color: var(--desktop-yellow);
+        }
+        
+        @media (max-width: 768px) {
+            .desktop-icon {
+                width: 60px;
+                height: 60px;
+            }
+            
+            .desktop-icon i {
+                font-size: 1.5rem;
+            }
+            
+            .desktop-icon span {
+                font-size: 0.6rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="desktop-container">
+        <!-- Desktop Icons -->
+        <div class="desktop-icon" style="top: 2rem; left: 2rem;" onclick="openWindow('memory-palace')">
+            <i class="fas fa-home"></i>
+            <span>Memory Palace</span>
+        </div>
+        
+        <div class="desktop-icon" style="top: 2rem; left: 6rem;" onclick="openWindow('flashcards')">
+            <i class="fas fa-layer-group"></i>
+            <span>Flashcards</span>
+        </div>
+        
+        <div class="desktop-icon" style="top: 6rem; left: 2rem;" onclick="openWindow('active-recall')">
+            <i class="fas fa-bolt"></i>
+            <span>Active Recall</span>
+        </div>
+        
+        <div class="desktop-icon" style="top: 6rem; left: 6rem;" onclick="openWindow('lecture-capture')">
+            <i class="fas fa-microphone"></i>
+            <span>Lecture Capture</span>
+        </div>
+        
+        <div class="desktop-icon" style="top: 10rem; left: 2rem;" onclick="openWindow('upload')">
+            <i class="fas fa-upload"></i>
+            <span>Upload</span>
+        </div>
+        
+        <div class="desktop-icon" style="top: 10rem; left: 6rem;" onclick="openWindow('progress')">
+            <i class="fas fa-chart-line"></i>
+            <span>Progress</span>
+        </div>
+        
+        <!-- Floating Text -->
+        <div class="floating-text" style="top: 4rem; right: 4rem;">
+            NEUROPLASTICS.EXE
+        </div>
+        
+        <div class="floating-text" style="top: 8rem; right: 8rem; animation-delay: 1s;">
+            LOADING BRAIN.SYS
+        </div>
+        
+        <!-- Main Window -->
+        <div class="window" id="main-window" style="top: 8rem; right: 4rem; width: 500px; height: 400px;">
+            <div class="window-header">
+                <span class="pixel-font">NEUROPLASTICS.EXE</span>
+                <div class="window-controls">
+                    <div class="window-control" onclick="minimizeWindow('main-window')">_</div>
+                    <div class="window-control" onclick="maximizeWindow('main-window')">□</div>
+                    <div class="window-control" onclick="closeWindow('main-window')">×</div>
+                </div>
+            </div>
+            <div class="window-content">
+                <div class="progress-dos">
+                    <div class="dos-prompt">INITIALIZING NEUROPLASTICITY ENGINE...</div>
+                    <div class="dos-prompt">MEMORY PALACE CONSTRUCTION: COMPLETE</div>
+                    <div class="dos-prompt">SPACED REPETITION ALGORITHM: ACTIVE</div>
+                    <div class="dos-prompt">ADHD OPTIMIZATION: ENABLED</div>
+                    <div class="dos-prompt">READY FOR STUDY SESSIONS</div>
+                    <br>
+                    <div class="dos-prompt">C:\NEUROPLASTICS></div>
+                </div>
+                
+                <div style="margin-top: 2rem;">
+                    <h3 style="color: var(--desktop-dark); margin-bottom: 1rem;">Study Statistics:</h3>
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem;">
+                        <div style="background: var(--desktop-light); padding: 1rem; border: 2px inset var(--desktop-gray);">
+                            <div style="font-size: 1.5rem; font-weight: bold; color: var(--desktop-dark);">12</div>
+                            <div style="font-size: 0.8rem; color: var(--desktop-gray);">Day Streak</div>
+                        </div>
+                        <div style="background: var(--desktop-light); padding: 1rem; border: 2px inset var(--desktop-gray);">
+                            <div style="font-size: 1.5rem; font-weight: bold; color: var(--desktop-dark);">89%</div>
+                            <div style="font-size: 0.8rem; color: var(--desktop-gray);">Accuracy</div>
+                        </div>
+                        <div style="background: var(--desktop-light); padding: 1rem; border: 2px inset var(--desktop-gray);">
+                            <div style="font-size: 1.5rem; font-weight: bold; color: var(--desktop-dark);">47</div>
+                            <div style="font-size: 0.8rem; color: var(--desktop-gray);">Cards Today</div>
+                        </div>
+                        <div style="background: var(--desktop-light); padding: 1rem; border: 2px inset var(--desktop-gray);">
+                            <div style="font-size: 1.5rem; font-weight: bold; color: var(--desktop-dark);">3</div>
+                            <div style="font-size: 0.8rem; color: var(--desktop-gray);">Sessions</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Taskbar -->
+    <div class="taskbar">
+        <div class="start-button" onclick="showStartMenu()">
+            <i class="fas fa-windows" style="margin-right: 0.5rem;"></i>
+            Start
+        </div>
+        <div class="taskbar-time" id="taskbar-time">
+            12:00 PM
+        </div>
+    </div>
+    
+    <script>
+        let windowZIndex = 10;
+        
+        function openWindow(windowType) {
+            // Create a new window for the selected feature
+            const windowId = 'window-' + Date.now();
+            const windowElement = document.createElement('div');
+            windowElement.className = 'window';
+            windowElement.id = windowId;
+            windowElement.style.top = Math.random() * 200 + 100 + 'px';
+            windowElement.style.left = Math.random() * 300 + 100 + 'px';
+            windowElement.style.zIndex = ++windowZIndex;
+            
+            const titles = {
+                'memory-palace': 'MEMORY_PALACE.EXE',
+                'flashcards': 'FLASHCARDS.EXE',
+                'active-recall': 'ACTIVE_RECALL.EXE',
+                'lecture-capture': 'LECTURE_CAPTURE.EXE',
+                'upload': 'UPLOAD.EXE',
+                'progress': 'PROGRESS_TRACKER.EXE'
+            };
+            
+            const contents = {
+                'memory-palace': 'Building spatial memory associations...<br><br>🏠🏠🏠<br><br>Place your concepts in virtual rooms for better recall.',
+                'flashcards': 'Spaced repetition algorithm active...<br><br>🃏🃏🃏<br><br>Smart flashcards adapt to your learning pace.',
+                'active-recall': 'Generating AI questions...<br><br>❓❓❓<br><br>Test your knowledge with dynamic quizzes.',
+                'lecture-capture': 'Recording and transcribing...<br><br>🎤🎤🎤<br><br>Transform lectures into study materials.',
+                'upload': 'Drag files here to upload...<br><br>📁📁📁<br><br>Support for PDF, TXT, DOC formats.',
+                'progress': 'Tracking your learning journey...<br><br>📊📊📊<br><br>Visualize your improvement over time.'
+            };
+            
+            windowElement.innerHTML = `
+                <div class="window-header" onmousedown="makeDraggable('${windowId}')">
+                    <span class="pixel-font">${titles[windowType]}</span>
+                    <div class="window-controls">
+                        <div class="window-control" onclick="minimizeWindow('${windowId}')">_</div>
+                        <div class="window-control" onclick="maximizeWindow('${windowId}')">□</div>
+                        <div class="window-control" onclick="closeWindow('${windowId}')">×</div>
+                    </div>
+                </div>
+                <div class="window-content">
+                    ${contents[windowType]}
+                </div>
+            `;
+            
+            document.querySelector('.desktop-container').appendChild(windowElement);
+        }
+        
+        function closeWindow(windowId) {
+            const window = document.getElementById(windowId);
+            if (window) {
+                window.remove();
+            }
+        }
+        
+        function minimizeWindow(windowId) {
+            const window = document.getElementById(windowId);
+            if (window) {
+                window.style.display = 'none';
+            }
+        }
+        
+        function maximizeWindow(windowId) {
+            const window = document.getElementById(windowId);
+            if (window) {
+                if (window.style.width === '100vw') {
+                    window.style.width = '';
+                    window.style.height = '';
+                    window.style.top = '';
+                    window.style.left = '';
+                } else {
+                    window.style.width = '100vw';
+                    window.style.height = 'calc(100vh - 50px)';
+                    window.style.top = '0';
+                    window.style.left = '0';
+                }
+            }
+        }
+        
+        function makeDraggable(windowId) {
+            const window = document.getElementById(windowId);
+            let isDragging = false;
+            let startX, startY, startLeft, startTop;
+            
+            window.onmousedown = function(e) {
+                isDragging = true;
+                startX = e.clientX;
+                startY = e.clientY;
+                startLeft = parseInt(window.style.left) || 0;
+                startTop = parseInt(window.style.top) || 0;
+                window.style.zIndex = ++windowZIndex;
+                
+                document.onmousemove = function(e) {
+                    if (isDragging) {
+                        const deltaX = e.clientX - startX;
+                        const deltaY = e.clientY - startY;
+                        window.style.left = (startLeft + deltaX) + 'px';
+                        window.style.top = (startTop + deltaY) + 'px';
+                    }
+                };
+                
+                document.onmouseup = function() {
+                    isDragging = false;
+                    document.onmousemove = null;
+                    document.onmouseup = null;
+                };
+            };
+        }
+        
+        function showStartMenu() {
+            alert('Start menu would open here!\n\nThis demonstrates the desktop-style interface design.');
+        }
+        
+        // Update taskbar time
+        function updateTime() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+            document.getElementById('taskbar-time').textContent = timeString;
+        }
+        
+        setInterval(updateTime, 1000);
+        updateTime();
+        
+        // Add click to focus for windows
+        document.addEventListener('click', (e) => {
+            if (e.target.closest('.window')) {
+                const window = e.target.closest('.window');
+                window.style.zIndex = ++windowZIndex;
+            }
+        });
+    </script>
+<script>
+    document.addEventListener('keydown', e => {
+        if (e.key === 'ArrowRight' || e.key === ' ') {
+            e.preventDefault();
+            window.parent.postMessage('go-next', '*');
+        } else if (e.key === 'ArrowLeft') {
+            e.preventDefault();
+            window.parent.postMessage('go-prev', '*');
+        }
+    });
+</script>
+</body>
+</html>
